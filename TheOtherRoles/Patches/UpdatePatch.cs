@@ -404,7 +404,7 @@ namespace TheOtherRoles.Patches {
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
                 if ((AmongUsClient.Instance.GameState != InnerNet.InnerNetClient.GameStates.Started || AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay)
-                    && player.MyAnim.ClipName is "Idle" or "Walk")
+                    && player.CanMove)
                 {
                     player.Collider.offset = new Vector2(0f, 127f);
                 }

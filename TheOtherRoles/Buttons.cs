@@ -23,6 +23,7 @@ namespace TheOtherRoles
         private static CustomButton deputyHandcuffButton;
         private static CustomButton timeMasterShieldButton;
         private static CustomButton amnisiacRememberButton;
+        private static CustomButton altruistReviveButton;
         private static CustomButton veterenAlertButton;
         private static CustomButton medicShieldButton;
         private static CustomButton bomberBombButton;
@@ -144,6 +145,7 @@ namespace TheOtherRoles
             arsonistButton.MaxTimer = Arsonist.cooldown;
             vultureEatButton.MaxTimer = Vulture.cooldown;
             amnisiacRememberButton.MaxTimer = 0f;
+            altruistReviveButton.MaxTimer = 0f;
             bomberKillButton.MaxTimer = 0f;
             bomberKillButton.Timer = 0f;
             mediumButton.MaxTimer = Medium.cooldown;
@@ -1871,6 +1873,36 @@ namespace TheOtherRoles
                 () => { return __instance.ReportButton.graphic.color == Palette.EnabledColor && CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
                 () => { amnisiacRememberButton.Timer = 0f; },
                 Amnisiac.getButtonSprite(),
+                new Vector3(-1.8f, -0.06f, 0),
+                __instance,
+                KeyCode.F
+            );
+
+            altruistReviveButton = new CustomButton(
+                () => {
+                    foreach (Collider2D collider2D in Physics2D.OverlapCircleAll(CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition(), CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance, Constants.PlayersOnlyMask)) {
+                        if (collider2D.tag == "DeadBody") {
+                            DeadBody component = collider2D.GetComponent<DeadBody>();
+                            if (component && !component.Reported) {
+                                Vector2 truePosition = CachedPlayer.LocalPlayer.PlayerControl.GetTruePosition();
+                                Vector2 truePosition2 = component.TruePosition;
+                                if (Vector2.Distance(truePosition2, truePosition) <= CachedPlayer.LocalPlayer.PlayerControl.MaxReportDistance && CachedPlayer.LocalPlayer.PlayerControl.CanMove && !PhysicsHelpers.AnythingBetween(truePosition, truePosition2, Constants.ShipAndObjectsMask, false)) {
+                                    GameData.PlayerInfo playerInfo = GameData.Instance.GetPlayerById(component.ParentId);
+
+                                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.AltruistRevive, Hazel.SendOption.Reliable, -1);
+                                    writer.Write(playerInfo.PlayerId);
+                                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                                    RPCProcedure.altruistRevive(playerInfo.PlayerId);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                },
+                () => { return Altruist.altruist != null && Altruist.altruist == CachedPlayer.LocalPlayer.PlayerControl && !CachedPlayer.LocalPlayer.Data.IsDead; },
+                () => { return __instance.ReportButton.graphic.color == Palette.EnabledColor && CachedPlayer.LocalPlayer.PlayerControl.CanMove; },
+                () => { altruistReviveButton.Timer = 0f; },
+                Altruist.getButtonSprite(),
                 new Vector3(-1.8f, -0.06f, 0),
                 __instance,
                 KeyCode.F

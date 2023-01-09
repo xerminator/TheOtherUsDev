@@ -38,6 +38,7 @@ namespace TheOtherRoles
         Swooper,
         Veteren,
         Amnisiac,
+        Altruist,
 		Cursed,
         Medic,
         Swapper,
@@ -171,6 +172,7 @@ namespace TheOtherRoles
         PlaceNinjaTrace,
         PlacePortal,
         AmnisiacTakeRole,
+        AltruistRevive,
         UsePortal,
         CultistCreateImposter,
         TurnToCrewmate,
@@ -343,6 +345,9 @@ namespace TheOtherRoles
                         break;
                     case RoleId.Amnisiac:
                         Amnisiac.amnisiac = player;
+                        break;
+                    case RoleId.Altruist:
+                        Altruist.altruist = player;
                         break;
                     case RoleId.Veteren:
                         Veteren.veteren = player;
@@ -772,6 +777,12 @@ namespace TheOtherRoles
                     Amnisiac.clearAndReload();
                     break;
 
+                case RoleId.Altruist:
+                    if (Amnisiac.resetRole) Altruist.clearAndReload();
+                    Altruist.altruist = amnisiac;
+                    Amnisiac.clearAndReload();
+                    break;
+
                 case RoleId.Sheriff:
             // Never reload Sheriff
                     if (Sheriff.formerDeputy != null && Sheriff.formerDeputy == Sheriff.sheriff) Sheriff.formerDeputy = amnisiac; // Ensure amni gets handcuffs
@@ -1132,6 +1143,14 @@ namespace TheOtherRoles
         }
     }
 
+    public static void altruistRevive(byte targetId) {
+        PlayerControl target = Helpers.playerById(targetId);
+        PlayerControl altruist = Altruist.altruist;
+            if (target == null || altruist == null) return;
+    target.Revive();
+    }
+
+
 
 
         public static void cultistCreateImposter(byte targetId) {
@@ -1259,6 +1278,8 @@ namespace TheOtherRoles
                 TimeMaster.timeMaster = oldShifter;
             if (Amnisiac.amnisiac != null && Amnisiac.amnisiac == player)
                 Amnisiac.amnisiac = oldShifter;
+            if (Altruist.altruist != null && Altruist.altruist == player)
+                Altruist.altruist = oldShifter;
             if (Veteren.veteren != null && Veteren.veteren == player)
                 Veteren.veteren = oldShifter;
             if (Medic.medic != null && Medic.medic == player)
@@ -1513,6 +1534,7 @@ namespace TheOtherRoles
             if (player == Detective.detective) Detective.clearAndReload();
             if (player == TimeMaster.timeMaster) TimeMaster.clearAndReload();
             if (player == Amnisiac.amnisiac) Amnisiac.clearAndReload();
+            if (player == Altruist.altruist) Altruist.clearAndReload();
             if (player == Veteren.veteren) Veteren.clearAndReload();
             if (player == Medic.medic) Medic.clearAndReload();
             if (player == Shifter.shifter) Shifter.clearAndReload();
@@ -2470,6 +2492,9 @@ namespace TheOtherRoles
                     break;
                 case (byte)CustomRPC.AmnisiacTakeRole:
                     RPCProcedure.amnisiacTakeRole(reader.ReadByte());
+                    break;
+                case (byte)CustomRPC.AltruistRevive:
+                    RPCProcedure.altruistRevive(reader.ReadByte());
                     break;
                 case (byte)CustomRPC.ShowIndomitableFlash:
                     RPCProcedure.showIndomitableFlash();

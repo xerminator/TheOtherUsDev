@@ -30,6 +30,7 @@ namespace TheOtherRoles
 			Cursed.clearAndReload();
             Deputy.clearAndReload();
             Amnisiac.clearAndReload();
+            Altruist.clearAndReload();
             Lighter.clearAndReload();
             Godfather.clearAndReload();
             Mafioso.clearAndReload();
@@ -159,9 +160,9 @@ namespace TheOtherRoles
 
             public static void updateIsMoving()
             {
-                PlayerPhysics phys = phantomRole.MyPhysics;
-                var currentAnim = phys.Animator.GetCurrentAnimation();
-                if ((currentAnim == phys.CurrentAnimationGroup.RunAnim)) {
+                PlayerPhysics playerPhysics = phantomRole.MyPhysics;
+                var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
+                if ((currentPhysicsAnim == playerPhysics.Animations.group.RunAnim)) {
                     isMoving = true;
                     Helpers.Log("Phantom is Moving");
                     visibility = 0.07f;
@@ -664,6 +665,23 @@ namespace TheOtherRoles
                         UnityEngine.Object.Destroy(arrow.arrow);
             }
             localArrows = new List<Arrow>();
+        }
+    }
+
+    public static class Altruist {
+        public static PlayerControl altruist;
+        public static Color color = new Color(0.5f, 0.7f, 1f, 1f);
+        public static List<PoolablePlayer> poolIcons = new List<PoolablePlayer>();
+
+        private static Sprite buttonSprite;
+        public static Sprite getButtonSprite() {
+            if (buttonSprite) return buttonSprite;
+            buttonSprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.Revive.png", 115f);
+            return buttonSprite;
+        }
+
+        public static void clearAndReload() {
+            altruist = null;
         }
     }
 

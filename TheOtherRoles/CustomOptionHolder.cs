@@ -86,6 +86,8 @@ namespace TheOtherRoles {
         public static CustomOption amnisiacShowArrows;
         public static CustomOption amnisiacResetRole;
 
+        public static CustomOption altruistSpawnRate;
+
         public static CustomOption arsonistSpawnRate;
         public static CustomOption arsonistCooldown;
         public static CustomOption arsonistDuration;
@@ -805,6 +807,8 @@ namespace TheOtherRoles {
             bodyGuardResetTargetAfterMeeting = CustomOption.Create(8821, Types.Crewmate, "Reset Target After Meeting", true, bodyGuardSpawnRate);
             bodyGuardFlash = CustomOption.Create(8822, Types.Crewmate, "Show Flash On Death", true, bodyGuardSpawnRate);
 
+      //      altruistSpawnRate = CustomOption.Create(33434343, Types.Crewmate, cs(Altruist.color, "Altruist"), rates, null, true);
+
 
 
             thiefSpawnRate = CustomOption.Create(400, Types.Neutral, cs(Thief.color, "Thief"), rates, null, true);
@@ -813,7 +817,7 @@ namespace TheOtherRoles {
             thiefHasImpVision = CustomOption.Create(403, Types.Neutral, "Thief Has Impostor Vision", true, thiefSpawnRate);
             thiefCanUseVents = CustomOption.Create(404, Types.Neutral, "Thief Can Use Vents", true, thiefSpawnRate);
 
-            modifierPhantomAbility = CustomOption.Create(2000353, Types.Neutral, cs(PhantomRole.color, "Phantom"), rates, null, true);
+      //      modifierPhantomAbility = CustomOption.Create(2000353, Types.Neutral, cs(PhantomRole.color, "Phantom"), rates, null, true);
 
             trapperSpawnRate = CustomOption.Create(410, Types.Crewmate, cs(Trapper.color, "Trapper"), rates, null, true);
             trapperCooldown = CustomOption.Create(420, Types.Crewmate, "Trapper Cooldown", 30f, 5f, 120f, 5f, trapperSpawnRate);

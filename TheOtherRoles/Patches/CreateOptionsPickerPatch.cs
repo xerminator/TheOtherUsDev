@@ -26,20 +26,10 @@ namespace TheOtherRoles.Patches {
             } else {
                 __instance.GameModeText.text = "TOU Hide N Seek";
                 MapOptions.gameMode = CustomGamemodes.HideNSeek;
-                }
-                return false;
-        
             }
-          //  else {
-                //
-      //      }
-        //}
-
-        private static void addGamemodeButton(CreateOptionsPicker __instance, string name, string spritePath, CustomGamemodes gamemode) {
-            Vector3 position1 = __instance.MapButtons[3].transform.position;
-            Vector3 position2 = __instance.transform.Find("Max Players").position;
-            float p = -5.8f + (renderers.Count * 1.4f);
+            return false;
         }
+
 
         [HarmonyPatch(typeof(CreateOptionsPicker), nameof(CreateOptionsPicker.Refresh))]
         public static void Postfix(CreateOptionsPicker __instance) {
@@ -51,7 +41,6 @@ namespace TheOtherRoles.Patches {
             }
         }
     }
-    
 
     [HarmonyPatch(typeof(GameModeMenu))]
     class GameModeMenuPatch {

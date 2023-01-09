@@ -324,7 +324,7 @@ public static bool isPlayerLover(PlayerControl player) {
 
         public static void turnToImpostor(PlayerControl player) {
             player.Data.Role.TeamType = RoleTeamTypes.Impostor;
-            RoleManager.Instance.SetRole(player, RoleTypes.Impostor);
+            RoleManager.Instance.SetRole(player, AmongUs.GameOptions.RoleTypes.Impostor);
             player.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
 
             System.Console.WriteLine("PROOF I AM IMP VANILLA ROLE: "+player.Data.Role.IsImpostor);

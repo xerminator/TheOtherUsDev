@@ -217,7 +217,7 @@ namespace TheOtherRoles.Patches {
 
                 Vector2 vector = pc.GetTruePosition() - truePosition;
                 var magnitude = vector.magnitude;
-                if (pc.AmOwner || hideVentAnim && magnitude < PlayerControl.LocalPlayer.myLight.LightRadius &&
+                if (pc.AmOwner || hideVentAnim && magnitude < PlayerControl.LocalPlayer.lightSource.ViewDistance &&
                     !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude,
                         ShipAndObjectsMask)) {
                     __instance.GetComponent<SpriteAnim>().Play(__instance.EnterVentAnim, 1f);
@@ -247,7 +247,7 @@ namespace TheOtherRoles.Patches {
 
                 Vector2 vector = pc.GetTruePosition() - truePosition;
                 var magnitude = vector.magnitude;
-                if (pc.AmOwner || hideVentAnim && magnitude < PlayerControl.LocalPlayer.myLight.LightRadius &&
+                if (pc.AmOwner || hideVentAnim && magnitude < PlayerControl.LocalPlayer.lightSource.ViewDistance &&
                     !PhysicsHelpers.AnyNonTriggersBetween(truePosition, vector.normalized, magnitude,
                         ShipAndObjectsMask)) {
                     __instance.GetComponent<SpriteAnim>().Play(__instance.ExitVentAnim, 1f);
@@ -320,7 +320,7 @@ namespace TheOtherRoles.Patches {
             }
         }
     }
-
+/* brb
     [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.DoClick))]
     public static class SabotageButtonDoClickPatch {
         public static bool Prefix(SabotageButton __instance) {
@@ -330,7 +330,7 @@ namespace TheOtherRoles.Patches {
             return false;
         }
     }
-
+*/
 
     [HarmonyPatch(typeof(ReportButton), nameof(ReportButton.DoClick))]
     class ReportButtonDoClickPatch {
