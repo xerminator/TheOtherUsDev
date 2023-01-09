@@ -9,6 +9,7 @@ using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
 using static TheOtherRoles.TheOtherRoles;
 using AmongUs.Data;
+using UnityEngine.UI;
 
 namespace TheOtherRoles
 {
@@ -131,11 +132,62 @@ namespace TheOtherRoles
 
             public static bool isCaught = false;
             public static bool SpawnInVent = true;
-            public static float minVisibility = 0.2f;
+            public static float visibility = 0.07f;
+            public static float petVisibility = 0f;
+            public static float colorBlindTextVisibility = 0f;
+            public static float hatVisibility = 0f;
             public static bool isMoving = false;
 
             public static void clearAndReload() {
                 phantomRole = null;
+            }
+
+            public static void hide()
+            {
+                try
+                {  // Sometimes renderers are missing for weird reasons. Try catch to avoid exceptions
+                    phantomRole.cosmetics.currentBodySprite.BodySprite.color = phantomRole.cosmetics.currentBodySprite.BodySprite.color.SetAlpha(visibility);
+                    if (DataManager.Settings.Accessibility.ColorBlindMode) phantomRole.cosmetics.colorBlindText.color = phantomRole.cosmetics.colorBlindText.color.SetAlpha(colorBlindTextVisibility);
+                    phantomRole.SetHatAndVisorAlpha(hatVisibility);
+                    phantomRole.cosmetics.skin.layer.color = phantomRole.cosmetics.skin.layer.color.SetAlpha(visibility);
+                    phantomRole.cosmetics.nameText.color = phantomRole.cosmetics.nameText.color.SetAlpha(colorBlindTextVisibility);
+                    phantomRole.cosmetics.currentPet.rend.color = phantomRole.cosmetics.currentPet.rend.color.SetAlpha(petVisibility);
+                    phantomRole.cosmetics.currentPet.shadowRend.color = phantomRole.cosmetics.currentPet.shadowRend.color.SetAlpha(petVisibility);
+                }
+                catch { }
+            }
+
+            public static void updateIsMoving()
+            {
+                PlayerPhysics phys = phantomRole.MyPhysics;
+                var currentAnim = phys.Animator.GetCurrentAnimation();
+                if ((currentAnim == phys.CurrentAnimationGroup.RunAnim)) {
+                    isMoving = true;
+                    Helpers.Log("Phantom is Moving");
+                    visibility = 0.07f;
+                    return;
+                }
+                //Helpers.Log("Phantom is not Moving");
+                isMoving = false;
+                visibility = 0.01f;
+            }
+
+            public static void makeClickable()
+            {
+                //Make phantom clickable
+                var collider2d = phantomRole.gameObject.AddComponent<BoxCollider2D>();
+                collider2d.isTrigger = true;
+                var button = phantomRole.gameObject.AddComponent<PassiveButton>();
+                button.OnClick = new Button.ButtonClickedEvent();
+                button.OnMouseOut = new Button.ButtonClickedEvent();
+                button.OnMouseOver = new Button.ButtonClickedEvent();
+                button.OnClick.AddListener((Action)(() => {
+                    if (MeetingHud.Instance) return;
+                    if (phantomRole.Data.IsDead) return;
+                    isCaught = true;
+                    Helpers.Log("Caught Phantom!");
+                }));
+                Helpers.Log("Phantom should be spawned and clickable");
             }
         }
         
@@ -914,7 +966,7 @@ namespace TheOtherRoles
         }
 
         public static Sprite getAdminSprite() {
-            byte mapId = PlayerControl.GameOptions.MapId;
+            byte mapId = GameOptionsManager.Instance.currentNormalGameOptions.MapId;
             UseButtonSettings button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.PolusAdminButton]; // Polus
             if (mapId == 0 || mapId == 3) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.AdminMapButton]; // Skeld || Dleks
             else if (mapId == 1) button = FastDestroyableSingleton<HudManager>.Instance.UseButton.fastUseSettings[ImageNames.MIRAAdminButton]; // Mira HQ
@@ -2408,8 +2460,6 @@ namespace TheOtherRoles
         }
 
         public static float growingProgress() {
-            if (timeOfGrowthStart == null) return 0f;
-
             float timeSinceStart = (float)(DateTime.UtcNow - timeOfGrowthStart).TotalMilliseconds;
             return Mathf.Clamp(timeSinceStart / (growingUpDuration * 1000), 0f, 1f);
         }
@@ -2474,8 +2524,8 @@ namespace TheOtherRoles
                 if (chameleonPlayer == Ninja.ninja && Ninja.isInvisble) continue;  // Dont make Ninja visible...
                 // check movement by animation
                 PlayerPhysics playerPhysics = chameleonPlayer.MyPhysics;
-                var currentPhysicsAnim = playerPhysics.Animator.GetCurrentAnimation();
-                if (currentPhysicsAnim != playerPhysics.CurrentAnimationGroup.IdleAnim) {
+                var currentPhysicsAnim = playerPhysics.Animations.Animator.GetCurrentAnimation();
+                if (currentPhysicsAnim != playerPhysics.Animations.group.IdleAnim) {
                     lastMoved[chameleonPlayer.PlayerId] = Time.time;
                 }
                 // calculate and set visibility

@@ -291,13 +291,13 @@ namespace TheOtherRoles.Patches {
                 MurderAttemptResult res = Helpers.checkMurderAttemptAndKill(CachedPlayer.LocalPlayer.PlayerControl, __instance.currentTarget);
                 // Handle blank kill
                 if (res == MurderAttemptResult.BlankKill) {
-                    CachedPlayer.LocalPlayer.PlayerControl.killTimer = PlayerControl.GameOptions.KillCooldown;
+                    CachedPlayer.LocalPlayer.PlayerControl.killTimer = GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown;
                     if (CachedPlayer.LocalPlayer.PlayerControl == Cleaner.cleaner)
                         Cleaner.cleaner.killTimer = HudManagerStartPatch.cleanerCleanButton.Timer = HudManagerStartPatch.cleanerCleanButton.MaxTimer;
                     else if (CachedPlayer.LocalPlayer.PlayerControl == Warlock.warlock)
                         Warlock.warlock.killTimer = HudManagerStartPatch.warlockCurseButton.Timer = HudManagerStartPatch.warlockCurseButton.MaxTimer;
                     else if (CachedPlayer.LocalPlayer.PlayerControl == Mini.mini && Mini.mini.Data.Role.IsImpostor)
-                        Mini.mini.SetKillTimer(PlayerControl.GameOptions.KillCooldown * (Mini.isGrownUp() ? 0.66f : 2f));
+                        Mini.mini.SetKillTimer(GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown * (Mini.isGrownUp() ? 0.66f : 2f));
                     else if (CachedPlayer.LocalPlayer.PlayerControl == Witch.witch)
                         Witch.witch.killTimer = HudManagerStartPatch.witchSpellButton.Timer = HudManagerStartPatch.witchSpellButton.MaxTimer;
                     else if (CachedPlayer.LocalPlayer.PlayerControl == Ninja.ninja)
@@ -362,6 +362,11 @@ namespace TheOtherRoles.Patches {
                 statusText = "The Lawyer can't start an emergency meeting";
                 if (Lawyer.isProsecutor) statusText = "The Prosecutor can't start an emergency meeting";
             }
+            // Deactivate emergency button for Phantom
+            if (PhantomRole.phantomRole != null && PhantomRole.phantomRole == CachedPlayer.LocalPlayer.PlayerControl) {
+                roleCanCallEmergency = false;
+                statusText = "The Phantom can't start an emergency meeting";
+            }
 
             if (!roleCanCallEmergency) {
                 __instance.StatusText.text = statusText;
@@ -391,7 +396,7 @@ namespace TheOtherRoles.Patches {
     public static class ConsoleCanUsePatch {
         public static bool Prefix(ref float __result, Console __instance, [HarmonyArgument(0)] GameData.PlayerInfo pc, [HarmonyArgument(1)] out bool canUse, [HarmonyArgument(2)] out bool couldUse) {
             canUse = couldUse = false;
-            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages)
+            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages || PhantomRole.phantomRole != null && PhantomRole.phantomRole == CachedPlayer.LocalPlayer.PlayerControl)
                 return !__instance.TaskTypes.Any(x => x == TaskTypes.FixLights || x == TaskTypes.FixComms);
             if (__instance.AllowImpostor) return true;
             if (!Helpers.hasFakeTasks(pc.Object)) return true;
@@ -404,7 +409,7 @@ namespace TheOtherRoles.Patches {
     class CommsMinigameBeginPatch {
         static void Postfix(TuneRadioMinigame __instance) {
             // Block Swapper from fixing comms. Still looking for a better way to do this, but deleting the task doesn't seem like a viable option since then the camera, admin table, ... work while comms are out
-            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages) {
+            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages || PhantomRole.phantomRole != null && PhantomRole.phantomRole == CachedPlayer.LocalPlayer.PlayerControl) {
                 __instance.Close();
             }
         }
@@ -414,7 +419,7 @@ namespace TheOtherRoles.Patches {
     class LightsMinigameBeginPatch {
         static void Postfix(SwitchMinigame __instance) {
             // Block Swapper from fixing lights. One could also just delete the PlayerTask, but I wanted to do it the same way as with coms for now.
-            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages) {
+            if (Swapper.swapper != null && Swapper.swapper == CachedPlayer.LocalPlayer.PlayerControl && !Swapper.canFixSabotages || PhantomRole.phantomRole != null && PhantomRole.phantomRole == CachedPlayer.LocalPlayer.PlayerControl) {
                 __instance.Close();
             }
         }
@@ -463,7 +468,7 @@ namespace TheOtherRoles.Patches {
                         // Hacker update
                         if (vitalsPanel.IsDead) {
                             DeadPlayer deadPlayer = deadPlayers?.Where(x => x.player?.PlayerId == player?.PlayerId)?.FirstOrDefault();
-                            if (deadPlayer != null && deadPlayer.timeOfDeath != null && k < hackerTexts.Count && hackerTexts[k] != null) {
+                            if (deadPlayer != null && k < hackerTexts.Count && hackerTexts[k] != null) {
                                 float timeSinceDeath = ((float)(DateTime.UtcNow - deadPlayer.timeOfDeath).TotalMilliseconds);
                                 hackerTexts[k].gameObject.SetActive(true);
                                 hackerTexts[k].text = Math.Round(timeSinceDeath / 1000) + "s";

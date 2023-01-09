@@ -14,6 +14,7 @@ using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
 using TheOtherRoles.CustomGameModes;
 using AmongUs.Data;
+using AmongUs.GameOptions;
 
 namespace TheOtherRoles
 {
@@ -201,6 +202,8 @@ namespace TheOtherRoles
         ProsecutorChangesRole,
         ProsecutorSetTarget,
         ProsecutorToPursuer,
+        updatePhantom,
+        revivePhantom,
 
         ThiefStealsRole,
         SetTrap,
@@ -251,7 +254,10 @@ namespace TheOtherRoles
             {
                 if (!player.Data.Role.IsImpostor)
                 {
-                    player.RemoveInfected();
+                    
+                    GameData.Instance.GetPlayerById(player.PlayerId); // player.RemoveInfected(); (was removed in 2022.12.08, no idea if we ever need that part again, replaced by these 2 lines.) 
+                    player.SetRole(RoleTypes.Crewmate);
+
                     player.MurderPlayer(player);
                     player.Data.IsDead = true;
                 }
@@ -591,7 +597,7 @@ namespace TheOtherRoles
         }
 
         public static void dynamicMapOption(byte mapId) {
-            PlayerControl.GameOptions.MapId = mapId;
+            GameOptionsManager.Instance.currentNormalGameOptions.MapId = mapId;
         }
 
         public static void setCrewmate(PlayerControl player) {
@@ -1205,7 +1211,12 @@ namespace TheOtherRoles
                 player == Prosecutor.prosecutor || // Don't shift on Prosecutor
                 player == Amnisiac.amnisiac) { // Don't shift on Amnesiac
                     oldShifter.Exiled();
-                    return;
+                    if (oldShifter == Lawyer.target && AmongUsClient.Instance.AmHost && Lawyer.lawyer != null) {
+                    MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.LawyerPromotesToPursuer, Hazel.SendOption.Reliable, -1);
+                    AmongUsClient.Instance.FinishRpcImmediately(writer);
+                    RPCProcedure.lawyerPromotesToPursuer();
+                }
+                return;
             }
 
             if (true) {
@@ -1359,7 +1370,18 @@ namespace TheOtherRoles
             PlayerControl player = Helpers.playerById(playerId);
             Helpers.Log("PlayerId; " + player.PlayerId);
             RPCProcedure.erasePlayerRoles(playerId, false);
+            //PhantomRole.phantomRole = player;
+            //PhantomAbility.phantomAbility.gameObject.layer = LayerMask.NameToLayer("Players");
+            player.gameObject.layer = LayerMask.NameToLayer("Players");
+            //PhantomRole.phantomRole.gameObject.SetActive(true);
+            player.ScalePlayer(1f, float.MaxValue);
+            player.notRealPlayer = true; 
+            //Helpers.Log("RPC PhantomRole layer: " + PhantomRole.phantomRole.gameObject.layer.ToString());
+             //PlayerControl.LocalPlayer.gameObject.layer = LayerMask.NameToLayer("Players");
+            //player.gameObject.layer = LayerMask.NameToLayer("Players");
             PhantomRole.phantomRole = player;
+            PhantomRole.phantomRole.Revive();
+            PhantomRole.makeClickable();
        //     PhantomAbility.clearAndReload();
         //    PhantomRole.clearAndReload();
 
@@ -1422,6 +1444,13 @@ namespace TheOtherRoles
             }
             */
             }
+        }
+
+        public static void updatePhantom()
+        {
+            if (PhantomRole.phantomRole == null) return;
+            PhantomRole.updateIsMoving();
+            PhantomRole.hide();
         }
 
 
@@ -1556,6 +1585,10 @@ namespace TheOtherRoles
                 if (player == Tiebreaker.tiebreaker) Tiebreaker.clearAndReload();
                 if (player == PhantomAbility.phantomAbility) PhantomAbility.clearAndReload();
                 if (player == Mini.mini) Mini.clearAndReload();
+                if (player == Watcher.watcher) Mini.clearAndReload();
+                if (player == Cursed.cursed) Mini.clearAndReload();
+                if (player == Radar.radar) Mini.clearAndReload();
+                if (player == Disperser.disperser) Mini.clearAndReload();
                 if (player == Indomitable.indomitable) Indomitable.clearAndReload();
                 if (player == Tunneler.tunneler) Tunneler.clearAndReload();
                 if (player == Slueth.slueth) Slueth.clearAndReload();
@@ -1749,11 +1782,11 @@ namespace TheOtherRoles
                     PlayerControl.LocalPlayer.MyPhysics.RpcExitVent(Vent.currentVent.Id);
                     PlayerControl.LocalPlayer.MyPhysics.ExitAllVents();
                 }
-            if (PlayerControl.GameOptions.MapId == 0) CachedPlayer.LocalPlayer.PlayerControl.transform.position = skeldSpawn[rnd.Next(skeldSpawn.Count)];
-                if (PlayerControl.GameOptions.MapId == 1) CachedPlayer.LocalPlayer.PlayerControl.transform.position = miraSpawn[rnd.Next(miraSpawn.Count)];
-                if (PlayerControl.GameOptions.MapId == 2) CachedPlayer.LocalPlayer.PlayerControl.transform.position = polusSpawn[rnd.Next(polusSpawn.Count)];
-                if (PlayerControl.GameOptions.MapId == 3) CachedPlayer.LocalPlayer.PlayerControl.transform.position = dleksSpawn[rnd.Next(dleksSpawn.Count)];
-                if (PlayerControl.GameOptions.MapId == 4) CachedPlayer.LocalPlayer.PlayerControl.transform.position = airshipSpawn[rnd.Next(airshipSpawn.Count)];}
+            if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 0) CachedPlayer.LocalPlayer.PlayerControl.transform.position = skeldSpawn[rnd.Next(skeldSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 1) CachedPlayer.LocalPlayer.PlayerControl.transform.position = miraSpawn[rnd.Next(miraSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2) CachedPlayer.LocalPlayer.PlayerControl.transform.position = polusSpawn[rnd.Next(polusSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 3) CachedPlayer.LocalPlayer.PlayerControl.transform.position = dleksSpawn[rnd.Next(dleksSpawn.Count)];
+                if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4) CachedPlayer.LocalPlayer.PlayerControl.transform.position = airshipSpawn[rnd.Next(airshipSpawn.Count)];}
                 Disperser.remainingDisperses--;
         }
         }
@@ -1958,7 +1991,7 @@ namespace TheOtherRoles
             camera.transform.position = new Vector3(position.x, position.y, referenceCamera.transform.position.z - 1f);
             camera.CamName = $"Security Camera {SecurityGuard.placedCameras}";
             camera.Offset = new Vector3(0f, 0f, camera.Offset.z);
-            if (PlayerControl.GameOptions.MapId == 2 || PlayerControl.GameOptions.MapId == 4) camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
+            if (GameOptionsManager.Instance.currentNormalGameOptions.MapId == 2 || GameOptionsManager.Instance.currentNormalGameOptions.MapId == 4) camera.transform.localRotation = new Quaternion(0, 0, 1, 1); // Polus and Airship 
 
             if (SubmergedCompatibility.IsSubmerged) {
                 // remove 2d box collider of console, so that no barrier can be created. (irrelevant for now, but who knows... maybe we need it later)
@@ -2243,7 +2276,7 @@ namespace TheOtherRoles
             if (target == Ninja.ninja) Ninja.ninja = thief;
             if (target.Data.Role.IsImpostor) {
                 RoleManager.Instance.SetRole(Thief.thief, RoleTypes.Impostor);
-                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(Thief.thief.killTimer, PlayerControl.GameOptions.KillCooldown);
+                FastDestroyableSingleton<HudManager>.Instance.KillButton.SetCoolDown(Thief.thief.killTimer, GameOptionsManager.Instance.currentNormalGameOptions.KillCooldown);
             }
             if (Lawyer.lawyer != null && target == Lawyer.target)
                 Lawyer.target = thief;
@@ -2669,6 +2702,13 @@ namespace TheOtherRoles
                     byte rewindPlayer = reader.ReadByte();
                     RPCProcedure.huntedRewindTime(rewindPlayer);
                     break;
+                case (byte)CustomRPC.updatePhantom:
+                    RPCProcedure.updatePhantom();
+                    break;
+                /*case (byte)CustomRPC.revivePhantom:
+                    byte phantomPlayer = reader.ReadByte();
+                    RPCProcedure.revivePhantom(phantomPlayer);
+                    break;*/
             }
         }
     }
