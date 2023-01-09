@@ -73,7 +73,6 @@ namespace TheOtherRoles
         public static RoleInfo securityGuard = new RoleInfo("Security Guard", SecurityGuard.color, "Seal vents and place cameras", "Seal vents and place cameras", RoleId.SecurityGuard);
         public static RoleInfo arsonist = new RoleInfo("Arsonist", Arsonist.color, "Let them burn", "Let them burn", RoleId.Arsonist, true);
         public static RoleInfo amnisiac = new RoleInfo("Amnesiac", Amnisiac.color, "Steal roles from the dead", "Steal roles from the dead", RoleId.Amnisiac, true);
-        public static RoleInfo altruist = new RoleInfo("Altruist", Altruist.color, "Sacrifice Yourself To Save Another", "Revive a dead body at the cost of your own life", RoleId.Altruist, true);
         public static RoleInfo goodGuesser = new RoleInfo("Vigilante", Guesser.color, "Guess and shoot", "Guess and shoot", RoleId.NiceGuesser);
         public static RoleInfo vulture = new RoleInfo("Vulture", Vulture.color, "Eat corpses to win", "Eat dead bodies", RoleId.Vulture, true);
         public static RoleInfo medium = new RoleInfo("Medium", Medium.color, "Question the souls of the dead to gain information", "Question the souls", RoleId.Medium);
@@ -175,7 +174,6 @@ namespace TheOtherRoles
             detective,
             timeMaster,
             amnisiac,
-            altruist,
             veteren,
             medic,
             swapper,
@@ -281,7 +279,6 @@ namespace TheOtherRoles
             if (p == TimeMaster.timeMaster) infos.Add(timeMaster);
             if (p == Cultist.cultist) infos.Add(cultist);
             if (p == Amnisiac.amnisiac) infos.Add(amnisiac);
-            if (p == Altruist.altruist) infos.Add(altruist);
             if (p == Veteren.veteren) infos.Add(veteren);
             if (p == Medic.medic) infos.Add(medic);
             if (p == Swapper.swapper) infos.Add(swapper);

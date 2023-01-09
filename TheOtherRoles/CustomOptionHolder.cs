@@ -86,8 +86,6 @@ namespace TheOtherRoles {
         public static CustomOption amnisiacShowArrows;
         public static CustomOption amnisiacResetRole;
 
-        public static CustomOption altruistSpawnRate;
-
         public static CustomOption arsonistSpawnRate;
         public static CustomOption arsonistCooldown;
         public static CustomOption arsonistDuration;
@@ -627,7 +625,7 @@ namespace TheOtherRoles {
             jackalCreateSidekickCooldown = CustomOption.Create(222, Types.Neutral, "Jackal Create Sidekick Cooldown", 30f, 10f, 60f, 2.5f, jackalSpawnRate);
             jackalhasChat = CustomOption.Create(1197, Types.Neutral, "Jackal Team Has Chat", false, jackalSpawnRate);
             jackalCanUseVents = CustomOption.Create(223, Types.Neutral, "Jackal Can Use Vents", true, jackalSpawnRate);
-            jackalCanUseSabo = CustomOption.Create(8876, Types.Neutral, "Jackal Team Can Sabotage", false, jackalSpawnRate);
+     //       jackalCanUseSabo = CustomOption.Create(8876, Types.Neutral, "Jackal Team Can Sabotage", false, jackalSpawnRate);
             jackalCanCreateSidekick = CustomOption.Create(224, Types.Neutral, "Jackal Can Create A Sidekick", false, jackalSpawnRate);
             sidekickPromotesToJackal = CustomOption.Create(225, Types.Neutral, "Sidekick Gets Promoted To Jackal On Jackal Death", false, jackalCanCreateSidekick);
             sidekickCanKill = CustomOption.Create(226, Types.Neutral, "Sidekick Can Kill", false, jackalCanCreateSidekick);
@@ -806,8 +804,6 @@ namespace TheOtherRoles {
             bodyGuardSpawnRate = CustomOption.Create(8820, Types.Crewmate, cs(BodyGuard.color, "Bodyguard"), rates, null, true);
             bodyGuardResetTargetAfterMeeting = CustomOption.Create(8821, Types.Crewmate, "Reset Target After Meeting", true, bodyGuardSpawnRate);
             bodyGuardFlash = CustomOption.Create(8822, Types.Crewmate, "Show Flash On Death", true, bodyGuardSpawnRate);
-
-      //      altruistSpawnRate = CustomOption.Create(33434343, Types.Crewmate, cs(Altruist.color, "Altruist"), rates, null, true);
 
 
 

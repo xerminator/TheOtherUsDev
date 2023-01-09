@@ -30,7 +30,6 @@ namespace TheOtherRoles
 			Cursed.clearAndReload();
             Deputy.clearAndReload();
             Amnisiac.clearAndReload();
-            Altruist.clearAndReload();
             Lighter.clearAndReload();
             Godfather.clearAndReload();
             Mafioso.clearAndReload();
@@ -668,23 +667,6 @@ namespace TheOtherRoles
         }
     }
 
-    public static class Altruist {
-        public static PlayerControl altruist;
-        public static Color color = new Color(0.5f, 0.7f, 1f, 1f);
-        public static List<PoolablePlayer> poolIcons = new List<PoolablePlayer>();
-
-        private static Sprite buttonSprite;
-        public static Sprite getButtonSprite() {
-            if (buttonSprite) return buttonSprite;
-            buttonSprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.Revive.png", 115f);
-            return buttonSprite;
-        }
-
-        public static void clearAndReload() {
-            altruist = null;
-        }
-    }
-
     public static class Veteren {
         public static PlayerControl veteren;
         public static Color color = new Color32(255, 77, 0, byte.MaxValue);
@@ -1160,7 +1142,7 @@ namespace TheOtherRoles
         }
       
         public static Vector3 getSwooperSwoopVector() {
-            return new Vector3(-2.7f, -0.06f, 0);
+            return CustomButton.ButtonPositions.upperRowLeft; //brb
         }
 
         public static void clearAndReload() {
@@ -1280,7 +1262,8 @@ namespace TheOtherRoles
         public static void clearAndReload() {
             jackal = null;
             currentTarget = null;
-            canSabotage = CustomOptionHolder.jackalCanUseSabo.getBool();
+      //      canSabotage = CustomOptionHolder.jackalCanUseSabo.getBool();
+            canSabotage = false;
             chatTarget = 1;
             fakeSidekick = null;
             cooldown = CustomOptionHolder.jackalKillCooldown.getFloat();
