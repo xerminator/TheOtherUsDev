@@ -33,7 +33,7 @@ namespace TheOtherRoles.Patches {
           //  else {
                 //
       //      }
-        }
+        //}
 
         private static void addGamemodeButton(CreateOptionsPicker __instance, string name, string spritePath, CustomGamemodes gamemode) {
             Vector3 position1 = __instance.MapButtons[3].transform.position;
@@ -50,6 +50,7 @@ namespace TheOtherRoles.Patches {
                 __instance.GameModeText.text = "TOU Hide N Seek";
             }
         }
+    }
     
 
     [HarmonyPatch(typeof(GameModeMenu))]
