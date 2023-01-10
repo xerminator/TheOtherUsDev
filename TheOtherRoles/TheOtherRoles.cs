@@ -706,11 +706,17 @@ namespace TheOtherRoles
         public static bool setShieldAfterMeeting = false;
         public static bool showShieldAfterMeeting = false;
         public static bool meetingAfterShielding = false;
+        public static bool reset = false;
 
         public static Color shieldedColor = new Color32(0, 221, 255, byte.MaxValue);
         public static PlayerControl currentTarget;
 
         private static Sprite buttonSprite;
+
+        public static void resetShielded() {
+                currentTarget = shielded = null;
+                usedShield = false;
+            }
         public static Sprite getButtonSprite() {
             if (buttonSprite) return buttonSprite;
             buttonSprite = Helpers.loadSpriteFromResources("TheOtherRoles.Resources.ShieldButton.png", 115f);
@@ -723,6 +729,7 @@ namespace TheOtherRoles
             futureShielded = null;
             currentTarget = null;
             usedShield = false;
+            reset = CustomOptionHolder.medicResetTargetAfterMeeting.getBool();
             showShielded = CustomOptionHolder.medicShowShielded.getSelection();
             showAttemptToShielded = CustomOptionHolder.medicShowAttemptToShielded.getBool();
       //      unbreakableShield = true; //CustomOptionHolder.medicBreakShield.getBool();

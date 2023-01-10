@@ -447,11 +447,11 @@ namespace TheOtherRoles.Patches {
             List<RoleId> impModifiers = new List<RoleId>();
             List<RoleId> ensuredImpModifiers = new List<RoleId>();
             List<RoleId> chanceImpModifiers = new List<RoleId>();
-
+/* brb phantom
             List<RoleId> neutralModifiers = new List<RoleId>();
             List<RoleId> ensuredNeutralModifiers = new List<RoleId>();
             List<RoleId> chanceNeutralModifiers = new List<RoleId>();
-
+*/
             allModifiers.AddRange(new List<RoleId> {
                 RoleId.Tiebreaker,
                 RoleId.Mini,
@@ -482,12 +482,12 @@ namespace TheOtherRoles.Patches {
             {
                 RoleId.EvilGuesser
             });
-
+/* brb phantom
             neutralModifiers.AddRange(new List<RoleId>
             {
                 RoleId.PhantomAbility
             });
-
+*/
             if (rnd.Next(1, 101) <= CustomOptionHolder.modifierLover.getSelection() * 10) { // Assign lover
                 bool isEvilLover = rnd.Next(1, 101) <= CustomOptionHolder.modifierLoverImpLoverRate.getSelection() * 10;
                 byte firstLoverId;
@@ -524,18 +524,23 @@ namespace TheOtherRoles.Patches {
                 if (getSelectionForRoleId(m) == 10) ensuredImpModifiers.AddRange(Enumerable.Repeat(m, getSelectionForRoleId(m, true) / 10));
                 else chanceImpModifiers.AddRange(Enumerable.Repeat(m, getSelectionForRoleId(m, true)));
             }
+            /* brb phantom
             foreach (RoleId m in neutralModifiers)
             {
                 if (getSelectionForRoleId(m) == 10) ensuredNeutralModifiers.AddRange(Enumerable.Repeat(m, getSelectionForRoleId(m, true) / 10));
                 else chanceNeutralModifiers.AddRange(Enumerable.Repeat(m, getSelectionForRoleId(m, true)));
             }
+*/
 
             assignModifiersToPlayers(ensuredImpModifiers, impPlayer, modifierCount); // Assign ensured imp modifier
+            /* brb phantom
             assignModifiersToPlayers(ensuredNeutralModifiers, neutralPlayer, modifierCount); // Assign ensured neutral modifier
+            */
 
             assignModifiersToPlayers(ensuredModifiers, players, modifierCount); // Assign ensured modifier
 
-            modifierCount -= ensuredImpModifiers.Count + ensuredNeutralModifiers.Count + ensuredModifiers.Count;
+      //brb phantom      modifierCount -= ensuredImpModifiers.Count + ensuredNeutralModifiers.Count + ensuredModifiers.Count;
+            modifierCount -= ensuredImpModifiers.Count + ensuredModifiers.Count;
             if (modifierCount <= 0) return;
             int chanceModifierCount = Mathf.Min(modifierCount, chanceModifiers.Count);
             List<RoleId> chanceModifierToAssign = new List<RoleId>();
@@ -571,7 +576,7 @@ namespace TheOtherRoles.Patches {
                 chanceImpModifierCount--;
             }
             assignModifiersToPlayers(chanceImpModifierToAssign, impPlayer, modifierCount); // Assign chance Imp modifier
-
+/* brb phantom
             int chanceNeutralModifierCount = Mathf.Min(modifierCount, chanceNeutralModifiers.Count);
             List<RoleId> chanceNeutralModifierToAssign = new List<RoleId>();
             while (chanceNeutralModifierCount > 0 && chanceNeutralModifiers.Count > 0)
@@ -589,7 +594,7 @@ namespace TheOtherRoles.Patches {
                 chanceNeutralModifierCount--;
             }
             assignModifiersToPlayers(chanceNeutralModifierToAssign, neutralPlayer, modifierCount); // Assign chance Imp modifier
-			
+			*/
         }
 
 

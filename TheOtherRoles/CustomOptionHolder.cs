@@ -204,6 +204,7 @@ namespace TheOtherRoles {
         public static CustomOption medicShowAttemptToMedic;
         public static CustomOption medicSetShieldAfterMeeting;
         public static CustomOption medicBreakShield;
+        public static CustomOption medicResetTargetAfterMeeting;
 
         public static CustomOption swapperSpawnRate;
         public static CustomOption swapperCanCallEmergency;
@@ -731,6 +732,7 @@ namespace TheOtherRoles {
             medicShowShielded = CustomOption.Create(143, Types.Crewmate, "Show Shielded Player", new string[] {"Everyone", "Shielded + Medic", "Medic"}, medicSpawnRate);
             medicBreakShield = CustomOption.Create(1146, Types.Crewmate, "Shield Is Unbreakable", true, medicSpawnRate);
             medicShowAttemptToShielded = CustomOption.Create(144, Types.Crewmate, "Shielded Player Sees Murder Attempt", false, medicBreakShield);
+            medicResetTargetAfterMeeting = CustomOption.Create(1423234, Types.Crewmate, "Reset Target After Meeting", false, medicSpawnRate);
             medicSetOrShowShieldAfterMeeting = CustomOption.Create(145, Types.Crewmate, "Shield Will Be Activated", new string[] { "Instantly", "Instantly, Visible\nAfter Meeting", "After Meeting" }, medicSpawnRate);
             medicShowAttemptToMedic = CustomOption.Create(146, Types.Crewmate, "Medic Sees Murder Attempt On Shielded Player", false, medicBreakShield);
 

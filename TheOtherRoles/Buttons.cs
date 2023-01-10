@@ -608,7 +608,7 @@ namespace TheOtherRoles
                     showTargetNameOnButton(Medic.currentTarget, medicShieldButton, "SHIELD");
                     return !Medic.usedShield && Medic.currentTarget && CachedPlayer.LocalPlayer.PlayerControl.CanMove;
                 },
-                () => {},
+                () => { if(Medic.reset) Medic.resetShielded(); },
                 Medic.getButtonSprite(),
                 CustomButton.ButtonPositions.lowerRowRight,
                 __instance,
