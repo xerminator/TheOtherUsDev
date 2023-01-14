@@ -3,7 +3,7 @@ using Hazel;
 using static TheOtherRoles.TheOtherRoles;
 using static TheOtherRoles.HudManagerStartPatch;
 using static TheOtherRoles.GameHistory;
-using static TheOtherRoles.MapOptions;
+using static TheOtherRoles.MapOptionsTor;
 using TheOtherRoles.Objects;
 using TheOtherRoles.Patches;
 using System.Collections.Generic;
@@ -83,7 +83,7 @@ namespace TheOtherRoles
         Impostor,
         // Modifier ---
         Lover,
-        LifeGuard,
+    //    LifeGuard,
         Bait,
         Bloody,
         AntiTeleport,
@@ -188,7 +188,7 @@ namespace TheOtherRoles
         UseCameraTime,
         UseVitalsTime,
         UnblackmailPlayer,
-        LifeGuardSave,
+    //    LifeGuardSave,
         SetBlanked,
         Bloody,
         SetFirstKill,
@@ -227,7 +227,7 @@ namespace TheOtherRoles
             Portal.clearPortals();
             Bloodytrail.resetSprites();
             Trap.clearTraps();
-            clearAndReloadMapOptions();
+            clearAndReloadMapOptionsTor();
             clearAndReloadRoles();
             clearGameHistory();
             setCustomButtonCooldowns();
@@ -265,7 +265,7 @@ namespace TheOtherRoles
         }
 
         public static void shareGamemode(byte gm) {
-            MapOptions.gameMode = (CustomGamemodes) gm;
+            MapOptionsTor.gameMode = (CustomGamemodes) gm;
         }
 
         public static void workaroundSetRoles(byte numberOfRoles, MessageReader reader)
@@ -518,9 +518,9 @@ namespace TheOtherRoles
                 case RoleId.Indomitable:
                     Indomitable.indomitable = player;
                     break;
-                case RoleId.LifeGuard:
-                    LifeGuard.lifeguard = player;
-                    break;
+          //      case RoleId.LifeGuard:
+         //           LifeGuard.lifeguard = player;
+         //           break;
                 case RoleId.Slueth:
                     Slueth.slueth = player;
                     break;
@@ -988,21 +988,21 @@ namespace TheOtherRoles
                         Vector3 bottomLeft = new Vector3(-FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.x, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.y, FastDestroyableSingleton<HudManager>.Instance.UseButton.transform.localPosition.z);
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
-                            if (MapOptions.playerIcons.ContainsKey(p.PlayerId) && p != Arsonist.arsonist)
+                            if (MapOptionsTor.playerIcons.ContainsKey(p.PlayerId) && p != Arsonist.arsonist)
                             {
                                 //Arsonist.poolIcons.Add(p);
                                 if (Arsonist.dousedPlayers.Contains(p))
                                 {
-                                    MapOptions.playerIcons[p.PlayerId].setSemiTransparent(false);
+                                    MapOptionsTor.playerIcons[p.PlayerId].setSemiTransparent(false);
                                 }
                                 else
                                 {
-                                    MapOptions.playerIcons[p.PlayerId].setSemiTransparent(true);
+                                    MapOptionsTor.playerIcons[p.PlayerId].setSemiTransparent(true);
                                 }
 
-                                MapOptions.playerIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(-0.25f, -0.25f, 0) + Vector3.right * playerCounter++ * 0.35f;
-                                MapOptions.playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.2f;
-                                MapOptions.playerIcons[p.PlayerId].gameObject.SetActive(true);
+                                MapOptionsTor.playerIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(-0.25f, -0.25f, 0) + Vector3.right * playerCounter++ * 0.35f;
+                                MapOptionsTor.playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.2f;
+                                MapOptionsTor.playerIcons[p.PlayerId].gameObject.SetActive(true);
                             }
                         }
                     }
@@ -1038,12 +1038,12 @@ namespace TheOtherRoles
 
                         foreach (PlayerControl p in CachedPlayer.AllPlayers)
                         {
-                            if (MapOptions.playerIcons.ContainsKey(p.PlayerId))
+                            if (MapOptionsTor.playerIcons.ContainsKey(p.PlayerId))
                             {
-                                MapOptions.playerIcons[p.PlayerId].setSemiTransparent(false);
-                                MapOptions.playerIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(0f, -1f, 0);
-                                MapOptions.playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.4f;
-                                MapOptions.playerIcons[p.PlayerId].gameObject.SetActive(false);
+                                MapOptionsTor.playerIcons[p.PlayerId].setSemiTransparent(false);
+                                MapOptionsTor.playerIcons[p.PlayerId].transform.localPosition = bottomLeft + new Vector3(0f, -1f, 0);
+                                MapOptionsTor.playerIcons[p.PlayerId].transform.localScale = Vector3.one * 0.4f;
+                                MapOptionsTor.playerIcons[p.PlayerId].gameObject.SetActive(false);
                             }
                         }
                     }
@@ -1295,12 +1295,12 @@ namespace TheOtherRoles
             }
         }
 
-        public static void lifeGuardSave(byte playerId1) {
-            if (MeetingHud.Instance) {
-                LifeGuard.playerId1 = playerId1;
-                LifeGuard.isLifeGuard = true;
-            }
-        }
+    //    public static void lifeGuardSave(byte playerId1) {
+   //         if (MeetingHud.Instance) {
+   //             LifeGuard.playerId1 = playerId1;
+   //             LifeGuard.isLifeGuard = true;
+   //         }
+   //     }
 
         public static void morphlingMorph(byte playerId) {  
             PlayerControl target = Helpers.playerById(playerId);
@@ -2009,7 +2009,7 @@ namespace TheOtherRoles
             } else {
                 camera.gameObject.SetActive(false);
             }
-            MapOptions.camerasToAdd.Add(camera);
+            MapOptionsTor.camerasToAdd.Add(camera);
         }
 
         public static void sealVent(int ventId) {
@@ -2028,7 +2028,7 @@ namespace TheOtherRoles
                 vent.name = "FutureSealedVent_" + vent.name;
             }
 
-            MapOptions.ventsToSeal.Add(vent);
+            MapOptionsTor.ventsToSeal.Add(vent);
         }
 
         public static void arsonistWin() {
@@ -2151,17 +2151,17 @@ namespace TheOtherRoles
 
         public static void useAdminTime(float time)
         {
-            MapOptions.restrictAdminTime -= time;
+            MapOptionsTor.restrictAdminTime -= time;
         }
 
         public static void useCameraTime(float time)
         {
-            MapOptions.restrictCamerasTime -= time;
+            MapOptionsTor.restrictCamerasTime -= time;
         }
 
         public static void useVitalsTime(float time)
         {
-            MapOptions.restrictVitalsTime -= time;
+            MapOptionsTor.restrictVitalsTime -= time;
         }
 
     public static void BHSetBounty(byte playerId) {
@@ -2237,7 +2237,7 @@ namespace TheOtherRoles
         public static void setFirstKill(byte playerId) {
             PlayerControl target = Helpers.playerById(playerId);
             if (target == null) return;
-            MapOptions.firstKillPlayer = target;
+            MapOptionsTor.firstKillPlayer = target;
         }
 
         public static void setTiebreak() {
@@ -2497,10 +2497,10 @@ namespace TheOtherRoles
                 case (byte)CustomRPC.MorphlingMorph:
                     RPCProcedure.morphlingMorph(reader.ReadByte());
                     break;
-                case (byte)CustomRPC.LifeGuardSave:
-                    byte savedId = reader.ReadByte();
-                    RPCProcedure.lifeGuardSave(savedId);
-                    break;
+      //          case (byte)CustomRPC.LifeGuardSave:
+       //             byte savedId = reader.ReadByte();
+       //             RPCProcedure.lifeGuardSave(savedId);
+      //              break;
                 case (byte)CustomRPC.CamouflagerCamouflage:
                     byte setTimer = reader.ReadByte();
                     RPCProcedure.camouflagerCamouflage(setTimer);

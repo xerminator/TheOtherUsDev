@@ -5,7 +5,7 @@ using UnityEngine;
 using System.Linq;
 using static TheOtherRoles.TheOtherRoles;
 using static TheOtherRoles.GameHistory;
-using static TheOtherRoles.MapOptions;
+using static TheOtherRoles.MapOptionsTor;
 using System.Collections.Generic;
 using TheOtherRoles.Players;
 using TheOtherRoles.Utilities;
@@ -266,7 +266,7 @@ namespace TheOtherRoles.Patches {
     }
 
 
-
+//error exists here in logging console??
     [HarmonyPatch(typeof(KillButton), nameof(KillButton.SetTarget))]
     public static class KillButtonSetTargetPatch
     {
@@ -320,17 +320,26 @@ namespace TheOtherRoles.Patches {
             }
         }
     }
-/* brb
-    [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.DoClick))]
+
+ [HarmonyPatch(typeof(SabotageButton), nameof(SabotageButton.DoClick))]
     public static class SabotageButtonDoClickPatch {
         public static bool Prefix(SabotageButton __instance) {
             // The sabotage button behaves just fine if it's a regular impostor
             if (PlayerControl.LocalPlayer.Data.Role.TeamType == RoleTeamTypes.Impostor) return true;
-            DestroyableSingleton<HudManager>.Instance.ShowMap((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+			//(Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); } 	);
+//			MapOptions options = DestroyableSingleton<HudManager>.Instance;
+  //          DestroyableSingleton<HudManager>.Instance.ToggleMapVisible((Il2CppSystem.Action<MapBehaviour>)((m) => { m.ShowSabotageMap(); }));
+			//MapOptionsTor.Mode = MapOptionsTor.Modes.Sabotage;
+			//DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(DestroyableSingleton<MapOptions>.Instance.Modes.Sabotage);
+			
+			DestroyableSingleton<HudManager>.Instance.ToggleMapVisible(new MapOptions
+			{
+				Mode = MapOptions.Modes.Sabotage
+			});
+
             return false;
         }
     }
-*/
 
     [HarmonyPatch(typeof(ReportButton), nameof(ReportButton.DoClick))]
     class ReportButtonDoClickPatch {
@@ -890,7 +899,7 @@ namespace TheOtherRoles.Patches {
     [HarmonyPatch(typeof(MedScanMinigame), nameof(MedScanMinigame.FixedUpdate))]
     class MedScanMinigameFixedUpdatePatch {
         static void Prefix(MedScanMinigame __instance) {
-            if (MapOptions.allowParallelMedBayScans) {
+            if (MapOptionsTor.allowParallelMedBayScans) {
                 __instance.medscan.CurrentUser = CachedPlayer.LocalPlayer.PlayerId;
                 __instance.medscan.UsersList.Clear();
             }

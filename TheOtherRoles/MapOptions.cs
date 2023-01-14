@@ -3,7 +3,7 @@ using UnityEngine;
 using TheOtherRoles.Players;
 
 namespace TheOtherRoles{
-    static class MapOptions {
+    static class MapOptionsTor {
         // Set values
         public static int maxNumberOfMeetings = 10;
         public static bool blockSkippingInEmergencyMeetings = false;
@@ -50,7 +50,7 @@ namespace TheOtherRoles{
         public static string firstKillName;
         public static PlayerControl firstKillPlayer;
 
-        public static void clearAndReloadMapOptions() {
+        public static void clearAndReloadMapOptionsTor() {
             meetingsCount = 0;
             nightOverlay = new List<GameObject>();
             canNightOverlay = true;

@@ -87,7 +87,7 @@ namespace TheOtherRoles.Patches {
                     color = BodyGuard.color;
                 }
                 
-                if (!Helpers.isCamoComms() && Camouflager.camouflageTimer <= 0f && MapOptions.firstKillPlayer != null && MapOptions.shieldFirstKill && ((target == MapOptions.firstKillPlayer && !isMorphedMorphling) || (isMorphedMorphling && Morphling.morphTarget == MapOptions.firstKillPlayer))) {
+                if (!Helpers.isCamoComms() && Camouflager.camouflageTimer <= 0f && MapOptionsTor.firstKillPlayer != null && MapOptionsTor.shieldFirstKill && ((target == MapOptionsTor.firstKillPlayer && !isMorphedMorphling) || (isMorphedMorphling && Morphling.morphTarget == MapOptionsTor.firstKillPlayer))) {
                     hasVisibleShield = true;
                     color = Color.blue;
                 }
@@ -598,7 +598,7 @@ namespace TheOtherRoles.Patches {
                     p.cosmetics.colorBlindText.transform.localPosition = new Vector3(0, -1f, -0.001f);
                 }
     
-                if ((Lawyer.lawyerKnowsRole && CachedPlayer.LocalPlayer.PlayerControl == Lawyer.lawyer && p == Lawyer.target) || p == CachedPlayer.LocalPlayer.PlayerControl || CachedPlayer.LocalPlayer.Data.IsDead || ((CachedPlayer.LocalPlayer.PlayerControl == Slueth.slueth && Slueth.reported.Any(x => x.PlayerId == p.PlayerId))) || MapOptions.impostorSeeRoles && Spy.spy == null && CachedPlayer.LocalPlayer.Data.Role.IsImpostor && !CachedPlayer.LocalPlayer.Data.IsDead && p == (p.Data.Role.IsImpostor && !p.Data.IsDead)) {
+                if ((Lawyer.lawyerKnowsRole && CachedPlayer.LocalPlayer.PlayerControl == Lawyer.lawyer && p == Lawyer.target) || p == CachedPlayer.LocalPlayer.PlayerControl || CachedPlayer.LocalPlayer.Data.IsDead || ((CachedPlayer.LocalPlayer.PlayerControl == Slueth.slueth && Slueth.reported.Any(x => x.PlayerId == p.PlayerId))) || MapOptionsTor.impostorSeeRoles && Spy.spy == null && CachedPlayer.LocalPlayer.Data.Role.IsImpostor && !CachedPlayer.LocalPlayer.Data.IsDead && p == (p.Data.Role.IsImpostor && !p.Data.IsDead)) {
                     Transform playerInfoTransform = p.cosmetics.nameText.transform.parent.FindChild("Info");
                     TMPro.TextMeshPro playerInfo = playerInfoTransform != null ? playerInfoTransform.GetComponent<TMPro.TextMeshPro>() : null;
                     if (playerInfo == null) {
@@ -627,12 +627,12 @@ namespace TheOtherRoles.Patches {
 
                     var (tasksCompleted, tasksTotal) = TasksHandler.taskInfo(p.Data);
                     string roleNames = RoleInfo.GetRolesString(p, true, false);
-                    string roleText = RoleInfo.GetRolesString(p, true, MapOptions.ghostsSeeModifier);
+                    string roleText = RoleInfo.GetRolesString(p, true, MapOptionsTor.ghostsSeeModifier);
                     string taskInfo = tasksTotal > 0 ? $"<color=#FAD934FF>({tasksCompleted}/{tasksTotal})</color>" : "";
 
                     string playerInfoText = "";
                     string meetingInfoText = "";                    
-                    if (p == CachedPlayer.LocalPlayer.PlayerControl || (MapOptions.impostorSeeRoles && Spy.spy == null && CachedPlayer.LocalPlayer.Data.Role.IsImpostor && !CachedPlayer.LocalPlayer.Data.IsDead && p == (p.Data.Role.IsImpostor  && !p.Data.IsDead))) {
+                    if (p == CachedPlayer.LocalPlayer.PlayerControl || (MapOptionsTor.impostorSeeRoles && Spy.spy == null && CachedPlayer.LocalPlayer.Data.Role.IsImpostor && !CachedPlayer.LocalPlayer.Data.IsDead && p == (p.Data.Role.IsImpostor  && !p.Data.IsDead))) {
                         // || CachedPlayer.LocalPlayer.PlayerControl == Snitch.snitch && numberOfTasks == 0 && Snitch.canSeeRoles && p == p.Data.Role.IsImpostor && !CachedPlayer.LocalPlayer.Data.IsDead || CachedPlayer.LocalPlayer.PlayerControl == Snitch.snitch && numberOfTasks == 0 && Snitch.canSeeRoles && Snitch.includeTeamJackal && p == Jackal.jackal && !CachedPlayer.LocalPlayer.Data.IsDead || CachedPlayer.LocalPlayer.PlayerControl == Snitch.snitch && numberOfTasks == 0 && Snitch.canSeeRoles && Snitch.includeTeamJackal && p == Sidekick.sidekick && !CachedPlayer.LocalPlayer.Data.IsDead
                         if (p.Data.IsDead) roleNames = roleText;
                         playerInfoText = $"{roleNames}";
@@ -643,15 +643,15 @@ namespace TheOtherRoles.Patches {
                         }
                         meetingInfoText = $"{roleNames} {taskInfo}".Trim();
                     }
-                    else if (MapOptions.ghostsSeeRoles && MapOptions.ghostsSeeTasks) {
+                    else if (MapOptionsTor.ghostsSeeRoles && MapOptionsTor.ghostsSeeTasks) {
                         playerInfoText = $"{roleText} {taskInfo}".Trim();
                         meetingInfoText = playerInfoText;
                     }
-                    else if (MapOptions.ghostsSeeTasks) {
+                    else if (MapOptionsTor.ghostsSeeTasks) {
                         playerInfoText = $"{taskInfo}".Trim();
                         meetingInfoText = playerInfoText;
                     }
-                    else if (MapOptions.ghostsSeeRoles || (Lawyer.lawyerKnowsRole && CachedPlayer.LocalPlayer.PlayerControl == Lawyer.lawyer && p == Lawyer.target)) {
+                    else if (MapOptionsTor.ghostsSeeRoles || (Lawyer.lawyerKnowsRole && CachedPlayer.LocalPlayer.PlayerControl == Lawyer.lawyer && p == Lawyer.target)) {
                         playerInfoText = $"{roleText}";
                         meetingInfoText = playerInfoText;
                     }
@@ -824,7 +824,7 @@ namespace TheOtherRoles.Patches {
                 if (BountyHunter.cooldownText != null && BountyHunter.cooldownText.gameObject != null) UnityEngine.Object.Destroy(BountyHunter.cooldownText.gameObject);
                 BountyHunter.cooldownText = null;
                 BountyHunter.bounty = null;
-                foreach (PoolablePlayer p in MapOptions.playerIcons.Values) {
+                foreach (PoolablePlayer p in MapOptionsTor.playerIcons.Values) {
                     if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
                 }
                 return;
@@ -851,15 +851,15 @@ namespace TheOtherRoles.Patches {
 
                 // Show poolable player
                 if (FastDestroyableSingleton<HudManager>.Instance != null && FastDestroyableSingleton<HudManager>.Instance.UseButton != null) {
-                    foreach (PoolablePlayer pp in MapOptions.playerIcons.Values) pp.gameObject.SetActive(false);
-                    if (MapOptions.playerIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject != null)
-                        MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(true);
+                    foreach (PoolablePlayer pp in MapOptionsTor.playerIcons.Values) pp.gameObject.SetActive(false);
+                    if (MapOptionsTor.playerIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptionsTor.playerIcons[BountyHunter.bounty.PlayerId].gameObject != null)
+                        MapOptionsTor.playerIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(true);
                 }
             }
 
             // Hide in meeting
-            if (MeetingHud.Instance && MapOptions.playerIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject != null)
-                MapOptions.playerIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(false);
+            if (MeetingHud.Instance && MapOptionsTor.playerIcons.ContainsKey(BountyHunter.bounty.PlayerId) && MapOptionsTor.playerIcons[BountyHunter.bounty.PlayerId].gameObject != null)
+                MapOptionsTor.playerIcons[BountyHunter.bounty.PlayerId].gameObject.SetActive(false);
 
             // Update Cooldown Text
             if (BountyHunter.cooldownText != null) {
@@ -881,8 +881,8 @@ namespace TheOtherRoles.Patches {
 	static void arsonistUpdate() {
 	    if (Arsonist.arsonist == null || CachedPlayer.LocalPlayer.PlayerControl != Arsonist.arsonist) return;
             foreach (PlayerControl p in Arsonist.dousedPlayers) {
-                if (MapOptions.playerIcons.ContainsKey(p.PlayerId)) {
-                    MapOptions.playerIcons[p.PlayerId].setSemiTransparent(false);
+                if (MapOptionsTor.playerIcons.ContainsKey(p.PlayerId)) {
+                    MapOptionsTor.playerIcons[p.PlayerId].setSemiTransparent(false);
                 }
             }
         }
@@ -1528,7 +1528,7 @@ namespace TheOtherRoles.Patches {
                 target.clearAllTasks();
 
             // First kill (set before lover suicide)
-            if (MapOptions.firstKillName == "") MapOptions.firstKillName = target.Data.PlayerName;
+            if (MapOptionsTor.firstKillName == "") MapOptionsTor.firstKillName = target.Data.PlayerName;
 
             // Lover suicide trigger on murder
             if ((Lovers.lover1 != null && target == Lovers.lover1) || (Lovers.lover2 != null && target == Lovers.lover2)) {
@@ -1648,12 +1648,12 @@ namespace TheOtherRoles.Patches {
                 Vector3 bottomLeft = IntroCutsceneOnDestroyPatch.bottomLeft + new Vector3(-0.25f, -0.25f, 0);
                 bottomLeft += new Vector3(-0.35f, -0.25f, 0);
                 foreach (PlayerControl p in CachedPlayer.AllPlayers) {
-                    if (!MapOptions.playerIcons.ContainsKey(p.PlayerId) || p.Data.Role.IsImpostor) continue;
+                    if (!MapOptionsTor.playerIcons.ContainsKey(p.PlayerId) || p.Data.Role.IsImpostor) continue;
                     if (p.Data.IsDead || p.Data.Disconnected) {
-                        MapOptions.playerIcons[p.PlayerId].gameObject.SetActive(false);
+                        MapOptionsTor.playerIcons[p.PlayerId].gameObject.SetActive(false);
                     }
                     else {
-                        MapOptions.playerIcons[p.PlayerId].transform.localPosition = bottomLeft + Vector3.right * visibleCounter * 0.35f;
+                        MapOptionsTor.playerIcons[p.PlayerId].transform.localPosition = bottomLeft + Vector3.right * visibleCounter * 0.35f;
                         visibleCounter++;
                     }
                 }

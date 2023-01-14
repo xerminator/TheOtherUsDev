@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using static TheOtherRoles.TheOtherRoles;
-using static TheOtherRoles.MapOptions;
+using static TheOtherRoles.MapOptionsTor;
 using TheOtherRoles.Objects;
 using System;
 using TheOtherRoles.Players;
@@ -15,7 +15,7 @@ namespace TheOtherRoles.Patches {
     [HarmonyPatch]
     class MeetingHudPatch {
         static bool[] selections;
-        static bool[] selectionsLG;
+    //    static bool[] selectionsLG;
         static SpriteRenderer[] renderers;
         private static GameData.PlayerInfo target = null;
         private const float scale = 0.65f;
@@ -23,8 +23,8 @@ namespace TheOtherRoles.Patches {
         private static PassiveButton[] swapperButtonList;
         private static TMPro.TextMeshPro swapperConfirmButtonLabel;
 
-        private static PassiveButton[] lifeGuardButtonList;
-        private static TMPro.TextMeshPro lifeGuardConfirmButtonLabel;
+     //   private static PassiveButton[] lifeGuardButtonList;
+    //    private static TMPro.TextMeshPro lifeGuardConfirmButtonLabel;
         public static bool shookAlready = false;
         public static Sprite PrevXMark = null;
         public static Sprite PrevOverlay = null;
@@ -137,7 +137,7 @@ namespace TheOtherRoles.Patches {
                             RPCProcedure.setTiebreak();
                         }
                     }
-
+/*
                     if (LifeGuard.isLifeGuard) {
                         if (exiled.Object.PlayerId == LifeGuard.playerId1) {
                             exiled = null;
@@ -147,7 +147,7 @@ namespace TheOtherRoles.Patches {
                         LifeGuard.playerId1 = Byte.MaxValue;
 
                     }
-
+*/
                     // RPCVotingComplete
                     __instance.RpcVotingComplete(array, exiled, tie);
                 }
@@ -160,7 +160,7 @@ namespace TheOtherRoles.Patches {
             public static bool Prefix(MeetingHud __instance, [HarmonyArgument(0)]GameData.PlayerInfo voterPlayer, [HarmonyArgument(1)]int index, [HarmonyArgument(2)]Transform parent) {
                 SpriteRenderer spriteRenderer = UnityEngine.Object.Instantiate<SpriteRenderer>(__instance.PlayerVotePrefab);
                 int cId = voterPlayer.DefaultOutfit.ColorId;
-                if (!(!GameOptionsManager.Instance.currentNormalGameOptions.AnonymousVotes || (CachedPlayer.LocalPlayer.Data.IsDead && MapOptions.ghostsSeeVotes) || Mayor.mayor != null && CachedPlayer.LocalPlayer.PlayerControl == Mayor.mayor && Mayor.canSeeVoteColors && TasksHandler.taskInfo(CachedPlayer.LocalPlayer.Data).Item1 >= Mayor.tasksNeededToSeeVoteColors || Watcher.watcher != null && CachedPlayer.LocalPlayer.PlayerControl == Watcher.watcher))
+                if (!(!GameOptionsManager.Instance.currentNormalGameOptions.AnonymousVotes || (CachedPlayer.LocalPlayer.Data.IsDead && MapOptionsTor.ghostsSeeVotes) || Mayor.mayor != null && CachedPlayer.LocalPlayer.PlayerControl == Mayor.mayor && Mayor.canSeeVoteColors && TasksHandler.taskInfo(CachedPlayer.LocalPlayer.Data).Item1 >= Mayor.tasksNeededToSeeVoteColors || Watcher.watcher != null && CachedPlayer.LocalPlayer.PlayerControl == Watcher.watcher))
                     voterPlayer.Object.SetColor(6);                    
                 voterPlayer.Object.SetPlayerMaterialColors(spriteRenderer);
                 spriteRenderer.transform.SetParent(parent);
@@ -279,7 +279,7 @@ namespace TheOtherRoles.Patches {
                 }
             }
         }
-
+/*
         static void lifeGuardOnClick(int i, MeetingHud __instance) {
             if (__instance.state == MeetingHud.VoteStates.Results || Swapper.charges <= 0) return;
             if (__instance.playerStates[i].AmDead) return;
@@ -300,7 +300,7 @@ namespace TheOtherRoles.Patches {
                 }
             }
         }
-
+*/
         static void swapperConfirm(MeetingHud __instance) {
             __instance.playerStates[0].Cancel();  // This will stop the underlying buttons of the template from showing up
             if (__instance.state == MeetingHud.VoteStates.Results) return;
@@ -334,7 +334,7 @@ namespace TheOtherRoles.Patches {
                 swapperChargesText.text = $"Swaps: {Swapper.charges}";
             }
         }
-
+/*
         static void lifeGuardConfirm(MeetingHud __instance) {
             __instance.playerStates[0].Cancel();  // This will stop the underlying buttons of the template from showing up
             if (__instance.state == MeetingHud.VoteStates.Results) return;
@@ -363,7 +363,7 @@ namespace TheOtherRoles.Patches {
                 LifeGuard.hasSaved = true;
             }
         }
-
+*/
         public static GameObject guesserUI;
         public static PassiveButton guesserUIExitButton;
         public static byte guesserCurrentTarget;
@@ -534,7 +534,7 @@ namespace TheOtherRoles.Patches {
         }
 
         static void populateButtonsPostfix(MeetingHud __instance) {
-
+/*
             // Add LifeGuard save buttons
             if (LifeGuard.lifeguard != null && CachedPlayer.LocalPlayer.PlayerControl == LifeGuard.lifeguard && !LifeGuard.lifeguard.Data.IsDead && !LifeGuard.hasSaved) {
                 selectionsLG = new bool[__instance.playerStates.Length];
@@ -593,7 +593,7 @@ namespace TheOtherRoles.Patches {
                 })));
 
             }
-
+*/
             // Add Swapper Buttons
             if (Swapper.swapper != null && CachedPlayer.LocalPlayer.PlayerControl == Swapper.swapper && !Swapper.swapper.Data.IsDead) {
                 selections = new bool[__instance.playerStates.Length];
@@ -808,7 +808,7 @@ namespace TheOtherRoles.Patches {
                 if (__instance.state >= MeetingHud.VoteStates.Discussion)
                 {
                     // Remove first kill shield
-                    MapOptions.firstKillPlayer = null;
+                    MapOptionsTor.firstKillPlayer = null;
                 }
                 if (Blackmailer.blackmailer != null ) {
                     // Blackmailer show overlay

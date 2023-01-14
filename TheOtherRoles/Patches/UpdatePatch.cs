@@ -273,7 +273,7 @@ namespace TheOtherRoles.Patches {
             }
 
             // Display lighter / darker color for all alive players
-            if (CachedPlayer.LocalPlayer != null && MeetingHud.Instance != null && MapOptions.showLighterDarker) {
+            if (CachedPlayer.LocalPlayer != null && MeetingHud.Instance != null && MapOptionsTor.showLighterDarker) {
                 foreach (PlayerVoteArea player in MeetingHud.Instance.playerStates) {
                     var target = Helpers.playerById(player.TargetPlayerId);
                     if (target != null)  player.NameText.text += $" ({(Helpers.isLighterColor(target.Data.DefaultOutfit.ColorId) ? "L" : "D")})";
@@ -281,7 +281,7 @@ namespace TheOtherRoles.Patches {
             }
         }
    //     static void shakeScreenIfReactorSabotage() {
- //           if (MapOptions.shakeScreenReactor && Helpers.gameStarted) {
+ //           if (MapOptionsTor.shakeScreenReactor && Helpers.gameStarted) {
   //              foreach (PlayerTask task in PlayerControl.LocalPlayer.myTasks) {
   //                  if (task.TaskType == TaskTypes.ResetReactor || task.TaskType == TaskTypes.ResetSeismic) {
   //                      HudManager.Instance.PlayerCam.shakeAmount = 0.025f;
@@ -374,7 +374,7 @@ namespace TheOtherRoles.Patches {
         }
 
         static void updateSabotageButton(HudManager __instance) {
-            if (MeetingHud.Instance) __instance.SabotageButton.Hide();if (MeetingHud.Instance || MapOptions.gameMode == CustomGamemodes.HideNSeek) __instance.SabotageButton.Hide();
+            if (MeetingHud.Instance) __instance.SabotageButton.Hide();if (MeetingHud.Instance || MapOptionsTor.gameMode == CustomGamemodes.HideNSeek) __instance.SabotageButton.Hide();
         }
 
         static void updateMapButton(HudManager __instance) {

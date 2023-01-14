@@ -90,7 +90,7 @@ namespace TheOtherRoles
             Disperser.clearAndReload();
             Mini.clearAndReload();
             Indomitable.clearAndReload();
-            LifeGuard.clearAndReload();
+  //          LifeGuard.clearAndReload();
             Blind.clearAndReload();
             Watcher.clearAndReload();
             Radar.clearAndReload();
@@ -1270,7 +1270,7 @@ namespace TheOtherRoles
             jackal = null;
             currentTarget = null;
       //      canSabotage = CustomOptionHolder.jackalCanUseSabo.getBool();
-            canSabotage = false;
+            canSabotage = false; //issue with vent button and killbutton overlapping when true
             chatTarget = 1;
             fakeSidekick = null;
             cooldown = CustomOptionHolder.jackalKillCooldown.getFloat();
@@ -1667,7 +1667,7 @@ namespace TheOtherRoles
             douseTarget = null; 
             triggerArsonistWin = false;
             dousedPlayers = new List<PlayerControl>();
-            foreach (PoolablePlayer p in MapOptions.playerIcons.Values) {
+            foreach (PoolablePlayer p in MapOptionsTor.playerIcons.Values) {
                 if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
             }
             cooldown = CustomOptionHolder.arsonistCooldown.getFloat();
@@ -1774,7 +1774,7 @@ namespace TheOtherRoles
             arrow = null;
             if (cooldownText != null && cooldownText.gameObject != null) UnityEngine.Object.Destroy(cooldownText.gameObject);
             cooldownText = null;
-            foreach (PoolablePlayer p in MapOptions.playerIcons.Values) {
+            foreach (PoolablePlayer p in MapOptionsTor.playerIcons.Values) {
                 if (p != null && p.gameObject != null) p.gameObject.SetActive(false);
             }
 
@@ -2295,7 +2295,7 @@ namespace TheOtherRoles
             indomitable = null;
         }
     }
-
+/*
     public static class LifeGuard {
         public static PlayerControl lifeguard;
         public static bool hasSaved = false;
@@ -2316,7 +2316,7 @@ namespace TheOtherRoles
             playerId1 = Byte.MaxValue;
         }
     }
-
+*/
     public static class Cursed {
         public static PlayerControl cursed;
         public static Color crewColor = new Color32(0, 247, 255, byte.MaxValue);

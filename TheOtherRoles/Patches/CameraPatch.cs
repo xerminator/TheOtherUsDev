@@ -25,7 +25,7 @@ namespace TheOtherRoles.Patches {
         static void UseCameraTime()
         {
             // Don't waste network traffic if we're out of time.
-            if (MapOptions.restrictDevices > 0 && MapOptions.restrictCamerasTime > 0f && CachedPlayer.LocalPlayer.PlayerControl.isAlive()  && CachedPlayer.LocalPlayer.PlayerControl != Hacker.hacker && CachedPlayer.LocalPlayer.PlayerControl != SecurityGuard.securityGuard)
+            if (MapOptionsTor.restrictDevices > 0 && MapOptionsTor.restrictCamerasTime > 0f && CachedPlayer.LocalPlayer.PlayerControl.isAlive()  && CachedPlayer.LocalPlayer.PlayerControl != Hacker.hacker && CachedPlayer.LocalPlayer.PlayerControl != SecurityGuard.securityGuard)
             {
                 MessageWriter writer = AmongUsClient.Instance.StartRpcImmediately(CachedPlayer.LocalPlayer.PlayerControl.NetId, (byte)CustomRPC.UseCameraTime, Hazel.SendOption.Reliable, -1);
                 writer.Write(cameraTimer);
@@ -91,11 +91,11 @@ namespace TheOtherRoles.Patches {
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.restrictDevices > 0)
+                    if (MapOptionsTor.restrictDevices > 0)
                     {
                         if (TimeRemaining == null)
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.GameSettings, __instance.transform);
+                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskPanel.taskText, __instance.transform);
                             TimeRemaining.alignment = TMPro.TextAlignmentOptions.Center;
                             TimeRemaining.transform.position = Vector3.zero;
                             TimeRemaining.transform.localPosition = new Vector3(0.0f, -1.7f);
@@ -103,13 +103,13 @@ namespace TheOtherRoles.Patches {
                             TimeRemaining.color = Palette.White;
                         }
 
-                        if (MapOptions.restrictCamerasTime <= 0f  && CachedPlayer.LocalPlayer.PlayerControl != Hacker.hacker && CachedPlayer.LocalPlayer.PlayerControl != SecurityGuard.securityGuard && !CachedPlayer.LocalPlayer.Data.IsDead || CachedPlayer.LocalPlayer.PlayerControl == PhantomRole.phantomRole)
+                        if (MapOptionsTor.restrictCamerasTime <= 0f  && CachedPlayer.LocalPlayer.PlayerControl != Hacker.hacker && CachedPlayer.LocalPlayer.PlayerControl != SecurityGuard.securityGuard && !CachedPlayer.LocalPlayer.Data.IsDead || CachedPlayer.LocalPlayer.PlayerControl == PhantomRole.phantomRole)
                         {
                             __instance.Close();
                             return false;
                         }
 
-                        string timeString = TimeSpan.FromSeconds(MapOptions.restrictCamerasTime).ToString(@"mm\:ss\.ff");
+                        string timeString = TimeSpan.FromSeconds(MapOptionsTor.restrictCamerasTime).ToString(@"mm\:ss\.ff");
                         TimeRemaining.text = String.Format("Remaining: {0}", timeString);
                         TimeRemaining.gameObject.SetActive(true);
 
@@ -202,11 +202,11 @@ namespace TheOtherRoles.Patches {
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.restrictDevices > 0)
+                    if (MapOptionsTor.restrictDevices > 0)
                     {
                         if (TimeRemaining == null)
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.GameSettings, __instance.transform);
+                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskPanel.taskText, __instance.transform);
                             TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                             TimeRemaining.transform.position = Vector3.zero;
                             TimeRemaining.transform.localPosition = new Vector3(0.95f, 4.45f);
@@ -214,13 +214,13 @@ namespace TheOtherRoles.Patches {
                             TimeRemaining.color = Palette.White;
                         }
 
-                        if (MapOptions.restrictCamerasTime <= 0f   && CachedPlayer.LocalPlayer.PlayerControl != Hacker.hacker && CachedPlayer.LocalPlayer.PlayerControl != SecurityGuard.securityGuard && !CachedPlayer.LocalPlayer.Data.IsDead || CachedPlayer.LocalPlayer.PlayerControl == PhantomRole.phantomRole)
+                        if (MapOptionsTor.restrictCamerasTime <= 0f   && CachedPlayer.LocalPlayer.PlayerControl != Hacker.hacker && CachedPlayer.LocalPlayer.PlayerControl != SecurityGuard.securityGuard && !CachedPlayer.LocalPlayer.Data.IsDead || CachedPlayer.LocalPlayer.PlayerControl == PhantomRole.phantomRole)
                         {
                             __instance.Close();
                             return false;
                         }
 
-                        string timeString = TimeSpan.FromSeconds(MapOptions.restrictCamerasTime).ToString(@"mm\:ss\.ff");
+                        string timeString = TimeSpan.FromSeconds(MapOptionsTor.restrictCamerasTime).ToString(@"mm\:ss\.ff");
                         TimeRemaining.text = String.Format("Remaining: {0}", timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }
@@ -273,11 +273,11 @@ namespace TheOtherRoles.Patches {
                     if (cameraTimer > 0.1f)
                         UseCameraTime();
 
-                    if (MapOptions.restrictDevices > 0)
+                    if (MapOptionsTor.restrictDevices > 0)
                     {
                         if (TimeRemaining == null)
                         {
-                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.GameSettings, __instance.transform);
+                            TimeRemaining = UnityEngine.Object.Instantiate(HudManager.Instance.TaskPanel.taskText, __instance.transform);
                             TimeRemaining.alignment = TMPro.TextAlignmentOptions.BottomRight;
                             TimeRemaining.transform.position = Vector3.zero;
                             TimeRemaining.transform.localPosition = new Vector3(1.0f, 4.25f);
@@ -285,13 +285,13 @@ namespace TheOtherRoles.Patches {
                             TimeRemaining.color = Palette.White;
                         }
 
-                        if (MapOptions.restrictCamerasTime <= 0f  && CachedPlayer.LocalPlayer.PlayerControl != Hacker.hacker && CachedPlayer.LocalPlayer.PlayerControl != SecurityGuard.securityGuard && !CachedPlayer.LocalPlayer.Data.IsDead || CachedPlayer.LocalPlayer.PlayerControl == PhantomRole.phantomRole)
+                        if (MapOptionsTor.restrictCamerasTime <= 0f  && CachedPlayer.LocalPlayer.PlayerControl != Hacker.hacker && CachedPlayer.LocalPlayer.PlayerControl != SecurityGuard.securityGuard && !CachedPlayer.LocalPlayer.Data.IsDead || CachedPlayer.LocalPlayer.PlayerControl == PhantomRole.phantomRole)
                         {
                             __instance.Close();
                             return false;
                         }
 
-                        string timeString = TimeSpan.FromSeconds(MapOptions.restrictCamerasTime).ToString(@"mm\:ss\.ff");
+                        string timeString = TimeSpan.FromSeconds(MapOptionsTor.restrictCamerasTime).ToString(@"mm\:ss\.ff");
                         TimeRemaining.text = String.Format("Remaining: {0}", timeString);
                         TimeRemaining.gameObject.SetActive(true);
                     }

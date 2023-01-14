@@ -106,7 +106,7 @@ namespace TheOtherRoles
         public static RoleInfo mini = new RoleInfo("Mini", Color.yellow, "No one will harm you until you grow up", "No one will harm you", RoleId.Mini, false, true);
         public static RoleInfo vip = new RoleInfo("VIP", Color.yellow, "You are the VIP", "Everyone is notified when you die", RoleId.Vip, false, true);
         public static RoleInfo indomitable  = new RoleInfo("Indomitable", Color.yellow, "Your role cannot be guessed", "You are Indomitable!", RoleId.Indomitable, false, true);
-        public static RoleInfo lifeguard  = new RoleInfo("Life Guard", Color.yellow, "Prevent 1 person from being ejected Once", "Save someones life in a meeting", RoleId.LifeGuard, false, true);
+    //    public static RoleInfo lifeguard  = new RoleInfo("Life Guard", Color.yellow, "Prevent 1 person from being ejected Once", "Save someones life in a meeting", RoleId.LifeGuard, false, true);
         public static RoleInfo slueth  = new RoleInfo("Sleuth", Color.yellow, "Learn the roles of bodies you report", "You know the roles of bodies you report", RoleId.Slueth, false, true);
         public static RoleInfo cursed  = new RoleInfo("Fanatic", Color.yellow, "You are crewmate....for now", "Discover your true potential", RoleId.Cursed, false, true, true);
         public static RoleInfo invert = new RoleInfo("Invert", Color.yellow, "Your movement is inverted", "Your movement is inverted", RoleId.Invert, false, true);
@@ -234,7 +234,7 @@ namespace TheOtherRoles
                 if (p == Watcher.watcher) infos.Add(watcher);
                 if (p == Radar.radar) infos.Add(radar);
                 if (p == Tunneler.tunneler) infos.Add(tunneler);
-                if (p == LifeGuard.lifeguard) infos.Add(lifeguard);
+            //    if (p == LifeGuard.lifeguard) infos.Add(lifeguard);
                 if (p == Slueth.slueth) infos.Add(slueth);
                 if (p == Disperser.disperser) infos.Add(disperser);
                 if (p == PhantomAbility.phantomAbility) infos.Add(phantomAbility);
@@ -311,9 +311,9 @@ namespace TheOtherRoles
             // Default roles (just impostor, just crewmate, or hunter / hunted for hide n seek
             if (infos.Count == count) {
                 if (p.Data.Role.IsImpostor)
-                    infos.Add(MapOptions.gameMode == CustomGamemodes.HideNSeek ? RoleInfo.hunter : RoleInfo.impostor);
+                    infos.Add(MapOptionsTor.gameMode == CustomGamemodes.HideNSeek ? RoleInfo.hunter : RoleInfo.impostor);
                 else
-                    infos.Add(MapOptions.gameMode == CustomGamemodes.HideNSeek ? RoleInfo.hunted : RoleInfo.crewmate);
+                    infos.Add(MapOptionsTor.gameMode == CustomGamemodes.HideNSeek ? RoleInfo.hunted : RoleInfo.crewmate);
             }
 
             return infos;

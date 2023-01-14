@@ -92,7 +92,7 @@ namespace TheOtherRoles.Modules {
                 if (!__instance.Chat.isActiveAndEnabled && (AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay || (CachedPlayer.LocalPlayer.PlayerControl.isTeamJackal() && Jackal.hasChat)))
                     __instance.Chat.SetVisible(true);
 
-                if ((Multitasker.multitasker.FindAll(x => x.PlayerId == CachedPlayer.LocalPlayer.PlayerId).Count > 0) || MapOptions.transparentTasks
+                if ((Multitasker.multitasker.FindAll(x => x.PlayerId == CachedPlayer.LocalPlayer.PlayerId).Count > 0) || MapOptionsTor.transparentTasks
          /*   && Jester.jester != CachedPlayer.LocalPlayer.PlayerControl
             && Werewolf.werewolf != CachedPlayer.LocalPlayer.PlayerControl
             && Prosecutor.prosecutor != CachedPlayer.LocalPlayer.PlayerControl
